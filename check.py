@@ -30,9 +30,12 @@ def checkURL(url, count=1):
     s = Soup(GET(url, **REQARGS).text, 'html5lib')
     for p in s.findAll(text="完整動態")[:count]:
         storyurl = p.parent.attrs['href']
-        sid = parse_qs(storyurl)['/story.php?story_fbid'][0]
-        uid = parse_qs(storyurl)['id'][0]
-        process(sid, uid)
+        try:
+            sid = parse_qs(storyurl)['/story.php?story_fbid'][0]
+            uid = parse_qs(storyurl)['id'][0]
+            process(sid, uid)
+        except:
+            pass
 
 if __name__ == '__main__':
     for uid in MONITOR:
