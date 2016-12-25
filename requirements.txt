@@ -1,0 +1,5 @@
+html5lib
+BeautifulSoup4
+sklearn
+jieba
+
