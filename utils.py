@@ -1,6 +1,34 @@
 from bs4 import BeautifulSoup as Soup
-from env import REQARGS
+from env import REQARGS, CLASSES, CHOOSE
 from requests import get as GET, post as POST
+from random import randint
+from math import pi
+
+def classify(text):
+    """Classify the given text.
+
+    Currently a naive text ranker, some Machine Learning™ are urgently needed.
+
+    :param text: The given text (in Chinese)
+a   :return (string) The category of the text
+    """
+    rank = [(sum(map(lambda x: text.count(x), (w for w in wl))), c) for (c, wl) in CLASSES]
+    rank.sort(key=lambda x: x[0])
+    with open('history', 'a') as f:
+        f.write("{} => {}\n".format(text.replace('\n', '\\n'), rank))
+    return rank[-1][1]
+
+def stickerize(category):
+    """Choose a sticker according to your category.
+
+    :param text: The desired category.
+    :return (string) The chosen sticker.
+    """
+    if category not in CHOOSE:
+        return None
+    else:
+        i = int(1.201**(randint(0, 16)-pi)) % len(CHOOSE[category]) # Some fun integer mapping
+        return CHOOSE[category][i]
 
 class Post:
     def react(self, name):
@@ -31,9 +59,14 @@ class Post:
         s = self.s = Soup(GET('https://mbasic.facebook.com/story.php?story_fbid={}&id={}'.format(sid, uid), **REQARGS).text, 'html5lib')
 
         try:
-            self.contents = '\n'.join(map(str, s.strong.findParent(id="m_story_permalink_view").find('p').strings))
+            self.contents = '\n'.join(map(str, list(s.strong.findParent(id="m_story_permalink_view").find('p').strings)))
         except:
             self.contents = ""
+
+        try:
+            self.contents += '\n'.join(map(str, list(s.strong.findParent(id="m_story_permalink_view").find('div', attrs={'style': 'font-size:24px;font-weight:300;line-height:1.2;display:inline'}).strings)))
+        except:
+            pass
 
         try:
             h = ''.join(map(str, s.strong.findParent('h3').strings))
