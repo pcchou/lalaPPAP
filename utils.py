@@ -8,7 +8,7 @@ from time import strftime
 def classify(text):
     """Classify the given text.
 
-    Currently a naive text ranker, some Machine Learning™ are urgently needed.
+    Currently a naive text ranker, some Machine Learning™ is urgently needed.
 
     :param text: The given text (in Chinese)
 a   :return (string) The category of the text
