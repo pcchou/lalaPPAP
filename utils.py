@@ -3,6 +3,7 @@ from env import REQARGS, CLASSES, CHOOSE
 from requests import get as GET, post as POST
 from random import randint
 from math import pi
+from time import strftime
 
 def classify(text):
     """Classify the given text.
@@ -15,7 +16,7 @@ a   :return (string) The category of the text
     rank = [(sum(map(lambda x: text.count(x), (w for w in wl))), c) for (c, wl) in CLASSES]
     rank.sort(key=lambda x: x[0])
     with open('history', 'a') as f:
-        f.write("{} => {}\n".format(text.replace('\n', '\\n'), rank))
+        f.write("[{}] {} => {}\n".format(strftime('%x %X'), text.replace('\n', '\\n'), rank))
     return rank[-1][1]
 
 def stickerize(category):
