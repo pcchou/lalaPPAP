@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as Soup
 from env import REQARGS, CLASSES, CHOOSE
 from requests import get as GET, post as POST
 from random import randint
-from math import pi
+from math import e
 from time import strftime
 
 def classify(text):
@@ -28,7 +28,7 @@ def stickerize(category):
     if category not in CHOOSE:
         return None
     else:
-        i = int(1.201**(randint(0, 16)-pi)) % len(CHOOSE[category]) # Some fun integer mapping
+        i = int(1.2**(e*(randint(0, 5**2)+2)**0.5)-2) % len(CHOOSE[category]) # Some fun integer mapping
         return CHOOSE[category][i]
 
 class Post:
